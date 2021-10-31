@@ -9,3 +9,5 @@ hobby project with the goal of playing multiple video in sync with lyrics scroll
 Demo url : https://magna-somnium.com/multi_stream
 
 React Player from : https://github.com/cookpete/react-player
+
+Lyrics scroller : https://github.com/mebtte/react-lrc
