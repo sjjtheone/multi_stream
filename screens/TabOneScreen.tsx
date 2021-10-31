@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Button, StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
-import { RootTabScreenProps } from "../types";
 import { Picker } from "@react-native-picker/picker";
 import Player from "../components/Player";
 import { BLUE_JP } from "../assets/lyrics/BLUE_JP";
 import { BLUE } from "../assets/lyrics/Blue";
 import { RGB_JP } from "../assets/lyrics/RGB_JP";
 import { MONSTER_JP } from "../assets/lyrics/MONSTER_JP";
-import { Lrc, LyricLine } from "react-lrc";
-import styled from "styled-components";
+import LyricLoader from "../components/LyricLoader";
 
 const songList = ["群青|Blue", "怪獣|Monster", "三原色|RGB"];
+const JPLyricList = [BLUE_JP, MONSTER_JP, RGB_JP];
+const ENLyricList = [BLUE, '', ''];
 const songUrlJP = [
   "https://www.youtube.com/watch?v=Y4nEEZwckuU",
   "https://www.youtube.com/watch?v=dy90tA3TT1c",
@@ -23,30 +23,20 @@ const songUrlEN = [
   "https://www.youtube.com/watch?v=BS5YyieaXgc",
 ];
 
-let startTime: number = Date.now();
-const timer = (state: boolean) => {
-  if (state) {
-    startTime = Date.now();
-    return Date.now() - startTime;
-  } else {
-    startTime = 0;
-    return 0;
-  }
-};
-
-export default function TabOneScreen({
-  navigation,
-}: RootTabScreenProps<"TabOne">) {
+export default function TabOneScreen() {
   const [playState, setPlayState] = React.useState(false);
   const [curList, setCurList] = React.useState(2);
   const [curJPUrl, setCurJPUrl] = React.useState(songUrlJP[curList]);
   const [curENUrl, setCurENUrl] = React.useState(songUrlEN[curList]);
-  const [curLyrics, setCurLyrics] = React.useState("RGB_JP");
+  const [curLyrics, setCurLyrics] = React.useState(JPLyricList[curList]);
   const [curMill, setCurMill] = React.useState(0);
+
+  const onCallBack = (milliseconds: number) => {
+    setCurMill(milliseconds);
+  };
 
   const onPlayPressed = () => {
     setPlayState(true);
-    setCurMill(timer(playState));
   };
 
   const onPausePressed = () => {
@@ -57,40 +47,27 @@ export default function TabOneScreen({
     setCurList(value);
     setCurJPUrl(songUrlJP[value]);
     setCurENUrl(songUrlEN[value]);
+    setCurLyrics(JPLyricList[value]);
     setPlayState(false);
+    setCurMill(0);
   };
-
-  React.useEffect(() => {
-    console.log('effect','running')
-    setCurMill(timer(playState));
-  });
-
-  const LrcLine = styled.div`
-    font-size: 16px;
-    padding: 5px 20px;
-    color: white;
-  `;
-
-  const lineRenderer = ({ line }: { line: LyricLine }) => (
-    <LrcLine>{line.content}</LrcLine>
-  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Multi Stream Viewer</Text>
       <View style={styles.fixToText}>
-        <Player url={curJPUrl} playState={playState} />
-        <Player url={curENUrl} playState={playState} />
+        <Player
+          url={curJPUrl}
+          playState={playState}
+          id={1}
+          callBack={onCallBack}
+        />
+        <Player url={curENUrl} playState={playState} id={2} />
       </View>
-      <Text style={styles.title}>{`Current Track | Time : ${curMill}`}</Text>
-      <Lrc
-        lrc={RGB_JP}
-        lineRenderer={lineRenderer}
-        autoScroll={true}
-        style={{ overflow: "hidden !important" }}
-        intervalOfRecoveringAutoScrollAfterUserScroll={0}
-        currentMillisecond={curMill}
-      />
+      <Text style={styles.title}>{`Current Track : ${songList[curList]}`}</Text>
+      <View style={styles.lyricCenter}>
+        <LyricLoader curLyrics={curLyrics} curMill={curMill} />
+      </View>
       <Picker
         selectedValue={curList}
         style={{ height: 40, width: 180 }}
@@ -100,9 +77,11 @@ export default function TabOneScreen({
           return <Picker.Item label={val} value={idx} key={idx} />;
         })}
       </Picker>
-      <View style={styles.fixToText}>
-        <Button onPress={onPlayPressed} title="Play" /> &nbsp;&nbsp;
-        <Button onPress={onPausePressed} title="Pause" />
+      <View>
+        <View style={styles.fixToText}>
+          <Button onPress={onPlayPressed} title="Play" />
+          <Button onPress={onPausePressed} title="Pause" />
+        </View>
       </View>
     </View>
   );
@@ -122,5 +101,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     margin: 10,
+  },
+  lyricCenter: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
