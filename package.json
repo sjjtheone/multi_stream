@@ -1,5 +1,6 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "homepage":"yoasobi",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -13,6 +14,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
+    "@react-native-picker/picker": "^2.1.0",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
@@ -26,15 +28,19 @@
     "expo-web-browser": "~10.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-lrc": "^2.1.4",
     "react-native": "0.64.2",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "react-player": "^2.9.0",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
+    "@types/styled-components": "^5.1.15",
     "jest-expo": "~43.0.0",
     "typescript": "~4.3.5"
   },
