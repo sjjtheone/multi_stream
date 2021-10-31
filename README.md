@@ -11,3 +11,8 @@ Demo url : https://magna-somnium.com/multi_stream
 React Player from : https://github.com/cookpete/react-player
 
 Lyrics scroller : https://github.com/mebtte/react-lrc
+
+Pending
+- Fix timer
+- Proper lyrics scrolling
+- Mobile responsive
