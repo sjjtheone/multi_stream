@@ -7,3 +7,5 @@ hobby project with the goal of playing multiple video in sync with lyrics scroll
 - run yarn web to run web version only
 
 Demo url : https://magna-somnium.com/multi_stream
+
+React Player from : https://github.com/cookpete/react-player
